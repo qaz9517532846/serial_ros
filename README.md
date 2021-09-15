@@ -43,7 +43,7 @@ $ roslaunch serial_ros serial_ros_node.launch
 
 ### ROS Parameter
 
-- Serial_Port(type: string, default: "/dev/ttyACM0") : Serial Comunication with device(ex. Arduino, STM32, Renease MCU).
+- Serial_Port(type: string, default: "/dev/ttyACM0") : Serial Comunication with device(ex. Arduino, STM32, Renesas, Linkit board and MCU).
 
 - Baund_rate(type: int, default: 115200): setting device baund rate.
 
