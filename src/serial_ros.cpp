@@ -139,23 +139,28 @@ void Serial_ros::serial_flowcontrol(int flowcontrol)
 void Serial_ros::spin()
 {
     // Variables to store outgoing and incoming data.
-    std::string write_string = "qweasdzxcv"; 
+    std::string write_string; 
     std::string read_string ;
 
     // Print to the terminal what will take place next.
     std::cout << "\nUsing Write() and Read() for one byte of data:"
               << std::endl << std::endl;
 
+    std::cout << "Serial Port sent Message: "; // Type a number and press enter
+    std::cin >> write_string; // Get user input from the keyboard
+
     // Write a string to each serial port.
-    serial_port_.Write(write_string) ;
+    serial_port_.Write(write_string.c_str()) ;
 
     // Wait until the data has actually been transmitted.
     serial_port_.DrainWriteBuffer() ;
+
+    sleep(1.5);
         
     try
     {
         // Read the appropriate number of bytes from each serial port.
-        serial_port_.Read(read_string, write_string.size(), 1000) ;
+        serial_port_.Read(read_string, write_string.size(), 1500) ;
     }
     catch (const ReadTimeout&)
     {
