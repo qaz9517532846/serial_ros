@@ -138,42 +138,34 @@ void Serial_ros::serial_flowcontrol(int flowcontrol)
 
 void Serial_ros::spin()
 {
-    std::string read_string_1 ;
-    
-    // Variable to hold user input.
-    std::string user_input ;
-    user_input.clear() ;
-    
+    // Variables to store outgoing and incoming data.
+    std::string write_string = "qweasdzxcv"; 
+    std::string read_string ;
+
     // Print to the terminal what will take place next.
-    std::cout << "Using Write() and ReadLine() to write a string and "
-              << "read a line of data:" << std::endl << std::endl ;
+    std::cout << "\nUsing Write() and Read() for one byte of data:"
+              << std::endl << std::endl;
 
-    // Prompt the user for input.
-    std::cout << R"(Enter something you would like to send over )"
-              << R"(serial, (enter "Q" or "q" to quit): )" << std::flush ;
-    
-    while(true)
+    // Write a string to each serial port.
+    serial_port_.Write(write_string) ;
+
+    // Wait until the data has actually been transmitted.
+    serial_port_.DrainWriteBuffer() ;
+        
+    try
     {
-        // Get input from the user.
-        std::getline(std::cin, user_input) ;
-
-        if (user_input == "q" ||
-            user_input == "Q" ||
-            user_input == "")
-        {
-            break ;
-        }
-
-        // Write the user input to the serial port.
-        serial_port_.Write(user_input + "\n") ;
-
-        // Read the data transmitted from the corresponding serial port.
-        serial_port_.ReadLine(read_string_1) ;
-
-        // Print to the terminal what was sent and what was received.
-        std::cout << "\tSerial Port 1 sent:\t"     << user_input   << std::endl
-                  << "\tSerial Port 2 received:\t" << read_string_1 << std::endl ;
+        // Read the appropriate number of bytes from each serial port.
+        serial_port_.Read(read_string, write_string.size(), 1000) ;
     }
+    catch (const ReadTimeout&)
+    {
+        std::cerr << "The Read() call has timed out." << std::endl ;
+    }
+
+    // Print to the terminal what was sent and what was received.
+    std::cout << "\tSerial Port sent:\t"     << write_string << std::endl
+              << "\tSerial Port received:\t" << read_string << std::endl
+              << std::endl ;
 
     // Close the serial ports and end the program.
     serial_port_.Close() ;
