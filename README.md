@@ -20,7 +20,7 @@ $ cd <catkin_workspace>/src
 ```
 
 ``` bash
-$ git clone https://github.com/qaz9517532846/gazebo_mecanum_plugins.git
+$ git clone https://github.com/qaz9517532846/serial_ros.git
 ```
 
 ``` bash
